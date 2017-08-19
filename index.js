@@ -623,6 +623,10 @@
         if (!target) {
             return false;
         }
+		
+		if (source.length != target.length){
+            return false;
+        } 
 
         if (source.length) {
             for (var i = 0; i < source.length; i++) {
