@@ -257,18 +257,17 @@
                 matchCallCount = false;
             }
 
-
-            var result = ((matchCallCount && actualCallCount === expectedCallCount) || actualCallCount >= expectedCallCount);
-            if (!result && throwErrors) {
+            
+            if (matchCallCount && actualCallCount !== expectedCallCount) {
                 throw new Error(methodName + ' did not receive the expected ' + expectedCallCount +
                     ' calls, actually received ' + state.callCount() + ' calls.');
             }
-            return result;
+            return true;
         };
         this.receivedWith = function (methodName) {
             var state = states.get(methodName);
             var actualArgs = argumentsSubset(arguments, 1);
-            var result = state.hasCallWithArgs(actualArgs);
+            var result = state.hasCallWithArgs(actualArgs);            
             if (!result && throwErrors) {
                 throw new Error(methodName + ' did not receive a call with the expected arguments.\n' +
                     state.getActualCallsString());
@@ -389,19 +388,27 @@
             self[name] = buildFunction(name);
         }
 
-        function build(target) {
-            for (var member in target) {
-                if (target.hasOwnProperty(member)) {
-                    var memberType = typeof target[member];
-                    if (memberType !== 'function') {
-                        self[member] = target[member];
-                    }
-                    else {
-                        addMember(member, target);
-                    }
-                }
+        function build(target) {            
+			var  propertyNames = Object.getOwnPropertyNames(target);			
+			var prototypeMembers = Object.getOwnPropertyNames(Object.getPrototypeOf(target));
+			var allMembers = propertyNames.concat(prototypeMembers);
+			for (var index in allMembers) {                				
+				var member = allMembers[index];
+				var memberType = typeof target[member];
+				
+				if (memberType !== 'function') {
+					self[member] = target[member];
+				}
+				else {
+					addMember(member, target);
+				}                
             }
+			
         }
+		
+		function isPrototypeMember(member){
+			
+		}
 
         function buildFromArray(target) {
             for (var i = 0; i < target.length; i++) {
@@ -623,11 +630,9 @@
         if (!target) {
             return false;
         }
-		
-		if (source.length != target.length){
+        if (source.length != target.length){
             return false;
         } 
-
         if (source.length) {
             for (var i = 0; i < source.length; i++) {
                 var sourceArg = source[i];
