@@ -1,3 +1,5 @@
+export = substitute; // make it a module
+
 declare var substitute: substitute.Factory;
 
 declare module 'jsSubstitute'{
