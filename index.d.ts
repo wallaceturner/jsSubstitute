@@ -2,9 +2,6 @@ export = substitute; // make it a module
 
 declare var substitute: substitute.Factory;
 
-declare module 'jsSubstitute'{
-    export = substitute;
-}
 
 declare module substitute {
 
@@ -35,7 +32,7 @@ declare module substitute {
          * @param {boolean} [throwErrors=false] Indicates whether to throw errors on assertion failure, defaults to global configuration or false
          * @returnType {Substitute}
          */
-        for(target: {Object}, throwErrors?: boolean): Substitute;
+        for(target: {Object:any}, throwErrors?: boolean): Substitute;
 
         /**
          * @description Creates a substitute for a promise
@@ -132,19 +129,19 @@ declare module substitute {
          * @param  {(result) => void} success The handler for successful resolution of the promise
          * @param {(error) => void error The handler for failed or error resolution of the promise
          */
-        then(success:(result) => void, error:(error) => void);
+        then(success:(result:any) => void, error:(error:any) => void) : any;
 
         /**
          * @description Initiate successful resolution of the promise
          * @param {any} [data] Optional data to be passed to the success handler
          */
-        success(data?:any);
+        success(data?:any) : any;
 
         /**
          * @description Initiate failure resolution of the promise
          * @param {any} [error] Optional error to be pased to error handler
          */
-        error(error?:any);
+        error(error?:any) : any;
 
         /**
          * @description Asserts that then was called on the promise
