@@ -10,6 +10,8 @@ declare module substitute {
      */
     interface Factory {
 
+        arg:Arg;
+        
         /**
          * @description Creates a substitute for the interface defined by the target
          * @param {{}} target An object literal representing the interface to be substituted
@@ -189,7 +191,7 @@ declare module substitute {
     /**
      * Substitutes an object tracking method calls
      */
-    interface Substitute {
+    interface Substitute {        
 
         /**
          * @description Indicates whether the substitute is configured to throw errors on failed assertions
